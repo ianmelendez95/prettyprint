@@ -1,0 +1,19 @@
+{
+  "name": "prettyprint",
+  "version": "1.0.0",
+  "description": "An exposition of various prettyprinting techniques",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianmelendez95/prettyprint.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianmelendez95/prettyprint/issues"
+  },
+  "homepage": "https://github.com/ianmelendez95/prettyprint#readme"
+}
