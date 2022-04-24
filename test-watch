@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+// Node script to spawn webpack and mocha processes, 
+// to have a test file watcher.
+// Elected over a bash script, as equivalent node script 
+// is much simpler.
+// (see 'trap' command in bash: https://stackoverflow.com/a/360275/10719983)
+
+const { spawn } = require('child_process');
+
+console.log("Running Webpack, Mocha will run after first successful build")
+const pack = spawn('webpack', ['--watch'], {
+  stdio: ['ignore', 'pipe', 'inherit']
+})
+pack.stdout.setEncoding('utf-8')
+
+let MOCHA_STARTED = false
+pack.stdout.on('data', function (data) {
+  if (MOCHA_STARTED) {
+    return
+  } else if (data.includes('compiled successfully')) {
+    spawn('mocha', ['--watch', './dist/test.bundle.js'], {
+      stdio: 'inherit'
+    })
+    MOCHA_STARTED = true
+  } else {
+    console.log(data)
+  }
+})

@@ -3,11 +3,12 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   entry: {
-    index: './src/index.ts'
+    index: './src/index.ts',
+    test: './test/test.ts'
   },
   devtool: 'eval-source-map',
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
   module: {
