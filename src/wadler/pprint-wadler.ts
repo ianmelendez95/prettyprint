@@ -1,3 +1,7 @@
+/**
+ * Implementation as described in Philip Wadler's 'A Prettier Printer'.
+ */
+
 export type Doc = Nil | Line | Text | Union
 
 export type Nil = { kind: 'nil' }
