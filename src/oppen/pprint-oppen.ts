@@ -44,30 +44,31 @@ export function mkEOF(): EOF {
  * Implementation as described by Derek C. Oppen in his paper 'Prettyprinting', 1980
  */
 
-class PPrint {
+export class PPrint {
   margin: number
 
   space: number = 0
   stack: number[] = []
 
-  inputBuffer: string
+  inputIdx: number = 0
+  inputBuffer: Token[]
   outputBuffer: string[] = []
 
-  stream: (Token | number)[]
-  size: number[]
+  stream: (Token | number)[] = []
+  size: number[] = []
 
   left: number 
   right: number 
   rightTotal: number
 
-  constructor(margin: number, input: string) {
+  constructor(margin: number, input: Token[]) {
     this.margin = margin
     this.inputBuffer = input
   }
 
   scan() {
     let x: Token | number
-    let S: number[]
+    let S: number[] = []
 
     while ((x = this.receive()).kind !== 'eof') {
       if (x.kind === 'block-begin') {
@@ -126,7 +127,13 @@ class PPrint {
   }
 
   receive(): Token {
-    return { kind: 'eof' }
+    if (this.inputIdx >= this.inputBuffer.length) {
+      return EOF
+    } else {
+      const result = this.inputBuffer[this.inputIdx]
+      this.inputIdx++
+      return result
+    }
   }
 
   /**
@@ -168,5 +175,9 @@ class PPrint {
 
   indent(x: number) {
     this.outputBuffer.push('\n' + ' '.repeat(x))
+  }
+
+  getOutput(): string {
+    return this.outputBuffer.join('')
   }
 }
