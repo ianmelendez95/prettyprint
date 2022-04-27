@@ -6,7 +6,11 @@ module.exports = {
     index: './src/index.ts',
     test: './test/test.ts'
   },
-  devtool: 'eval-source-map',
+
+  // preferred over eval because 'node-source-map-support' module 
+  // expects full source maps
+  devtool: 'source-map',  
+
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
