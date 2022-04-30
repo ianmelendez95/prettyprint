@@ -32,6 +32,11 @@ describe('pprint-oppen', function () {
     })
   })
   describe("#PPrint", function () {
+    it('should print a simple string', function () {
+      const pprint: PPrint = new PPrint(30, [mkString('aaa')])
+      pprint.scan()
+      assert.equal(pprint.getOutput(), 'aaa')
+    })
     it('should indent tree to width 30', function () {
       const pprint: PPrint = new PPrint(30, tokenizeTree(testTree()))
       pprint.scan()
