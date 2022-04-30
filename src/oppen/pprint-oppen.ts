@@ -25,7 +25,7 @@ export function mkString(string: string): TString {
 }
 
 export function mkBlockBegin(): BlockBegin {
-  return { kind: 'block-begin' }
+  return BLOCK_BEGIN
 }
 
 export function mkBlockEnd(): BlockEnd {
@@ -104,7 +104,7 @@ export class PPrint {
       } else if (x.kind === 'blank') {
         this.right++
 
-        x = S[-1]
+        x = S.at(-1)
         if ((this.stream[x] as Token).kind === 'blank') {
           this.size[S.pop()] = this.rightTotal + this.size[x]
         }
