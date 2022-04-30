@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "./test-watch",
+    "test-debug": "./test-debug",
     "build": "webpack",
     "watch": "webpack --watch",
     "serve": "webpack serve"

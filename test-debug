@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+const { spawn } = require('child_process');
+
+spawn('mocha', ['inspect',
+                '--require', 
+                'source-map-support/register', 
+                './dist/test.bundle.js'], {
+  stdio: 'inherit'
+})
