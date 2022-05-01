@@ -11,13 +11,13 @@ export type BlockEnd = {
   kind: 'block-end'
 }
 export type Blank = {
-  kind: 'blank',
-  space: number
+  kind: 'blank'
 }
 export type EOF = { kind: 'eof' }
 
 const BLOCK_BEGIN: BlockBegin = { kind: 'block-begin' }
 const BLOCK_END: BlockEnd = { kind: 'block-end' }
+const BLANK: Blank = { kind: 'blank' }
 const EOF: EOF = { kind: 'eof' }
 
 export function mkString(string: string): TString {
@@ -32,8 +32,8 @@ export function mkBlockEnd(): BlockEnd {
   return BLOCK_END
 }
 
-export function mkBlank(space: number): Blank {
-  return { kind: 'blank', space }
+export function mkBlank(): Blank {
+  return BLANK
 }
 
 export function mkEOF(): EOF {
@@ -68,6 +68,8 @@ export class PPrint {
 
   scan() {
     let x: Token | number
+
+    // S = stack of spaces and blocks
     let S: number[] = []
 
     while ((x = this.receive()).kind !== 'eof') {
@@ -181,42 +183,3 @@ export class PPrint {
     return this.outputBuffer.join('')
   }
 }
-
-export function joinBlanks(tokens: Token[]): Token[] {
-  const result: Token[] = []
-
-  let i = 0, len = tokens.length
-  while (i < len) {
-    let nextNonBlank = findNextNonBlankIndex(tokens, i)
-    if (nextNonBlank === i) {
-      result.push(tokens[i])
-      i++
-    } else {
-      result.push(mkBlank(sumBlankSpaces(tokens, i, nextNonBlank)))
-      i = nextNonBlank
-    }
-  }
-
-  return result
-}
-
-function findNextNonBlankIndex(tokens: Token[], start: number): number {
-  let nextNonBlank = start
-  for (; nextNonBlank < tokens.length; nextNonBlank++) {
-    if (tokens[nextNonBlank].kind !== 'blank') {
-      return nextNonBlank
-    }
-  }
-  return nextNonBlank
-}
-
-function sumBlankSpaces(tokens: Token[], 
-                        start: number,
-                        end: number): number {
-  let sum: number = 0
-  for (let i = start; i < end; i++) {
-    sum += (tokens[i] as Blank).space
-  }
-  return sum
-}
-

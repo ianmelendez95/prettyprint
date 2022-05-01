@@ -1,41 +1,27 @@
 import * as chai from 'chai'
-import { joinBlanks, mkBlank, mkBlockBegin, mkBlockEnd, mkString, PPrint, Token } from '../src/oppen/pprint-oppen'
+import { mkBlank, mkBlockBegin, mkBlockEnd, mkString, PPrint, Token } from '../src/oppen/pprint-oppen'
 import { Doc, concat, line, nest, nil, text, layout, group, pretty } from '../src/wadler/pprint-wadler'
 
 const assert = chai.assert
 
 describe('pprint-oppen', function () {
-  describe("#joinBlanks", function () {
-    it('should join some blanks', function () {
-      const tokens: Token[] = [
-        mkBlockBegin(),
-        mkString("hello"),
-        mkBlank(2),
-        mkBlank(3),
-        mkString("there"),
-        mkBlank(1),
-        mkBlank(1),
-        mkBlank(1),
-        mkString("world"),
-        mkBlockEnd()
-      ]
-      const tokensJoined: Token[] = [
-        mkBlockBegin(),
-        mkString("hello"),
-        mkBlank(5),
-        mkString("there"),
-        mkBlank(3),
-        mkString("world"),
-        mkBlockEnd()
-      ]
-      assert.deepEqual(joinBlanks(tokens), tokensJoined)
-    })
-  })
   describe("#PPrint", function () {
     it('should print a simple string', function () {
       const pprint: PPrint = new PPrint(30, [mkString('aaa')])
       pprint.scan()
       assert.equal(pprint.getOutput(), 'aaa')
+    })
+    it('should print spaced strings', function () {
+      const pprint: PPrint = new PPrint(
+        30, 
+        [mkBlockBegin(), 
+         mkString('hello'),
+         mkBlank(),
+         mkString('world'),
+         mkBlockEnd()]
+      )
+      pprint.scan()
+      assert.equal(pprint.getOutput(), 'hello world')
     })
     it('should indent tree to width 30', function () {
       const pprint: PPrint = new PPrint(30, tokenizeTree(testTree()))
@@ -87,10 +73,10 @@ function testTree(): Tree {
 function tokenizeTree({ value, children }: Tree): Token[] {
   const tokens: Token[] = []
   tokens.push(mkBlockBegin())
-  tokens.push(mkString(value), mkBlank(1))
-  tokens.push(...intersperse(children.flatMap(tokenizeTree), mkBlank(1)))
+  tokens.push(mkString(value), mkBlank())
+  tokens.push(...intersperse(children.flatMap(tokenizeTree), mkBlank()))
   tokens.push(mkBlockEnd())
-  return joinBlanks(tokens)
+  return tokens
 }
 
 function intersperse<T>(array: T[], delim: T): T[] {
