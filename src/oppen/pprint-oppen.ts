@@ -105,7 +105,7 @@ export class PPrint {
         this.right++
 
         x = S.at(-1)
-        if ((this.stream[x] as Token).kind === 'blank') {
+        if (this.stream[x] && (this.stream[x] as Token).kind === 'blank') {
           this.size[S.pop()] = this.rightTotal + this.size[x]
         }
 
