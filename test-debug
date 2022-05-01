@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 
-const { spawn } = require('child_process');
+const process = require('process')
+const { spawn } = require('child_process')
+
+const mochaArgs = process.argv.slice(2)
 
 console.log("Running Webpack, Mocha will run after first successful build")
 const pack = spawn('webpack', {
@@ -16,6 +19,7 @@ pack.stdout.on('data', function (data) {
     spawn('mocha', ['inspect',
                     '--require', 
                     'source-map-support/register', 
+                    ...mochaArgs,
                     './dist/test.bundle.js'], {
       stdio: 'inherit'
     })
