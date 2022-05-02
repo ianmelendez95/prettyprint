@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-const process = require('process')
 const { spawn } = require('child_process')
 
 const mochaArgs = process.argv.slice(2)
