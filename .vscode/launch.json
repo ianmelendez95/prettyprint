@@ -20,7 +20,8 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "node"
+      "type": "node",
+      "preLaunchTask": "build"
     },
     {
       "args": [
@@ -39,7 +40,8 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "node"
+      "type": "node",
+      "preLaunchTask": "npm: build"
     }
   ]
 }
