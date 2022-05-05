@@ -21,7 +21,7 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      "preLaunchTask": "build"
+      "preLaunchTask": "npm: build"
     },
     {
       "args": [
@@ -30,7 +30,7 @@
         "--timeout",
         "999999",
         "--colors",
-        "-g", "block string",
+        "-g", "indent tree",
         "${workspaceFolder}/dist/test.bundle.js"
       ],
       "internalConsoleOptions": "openOnSessionStart",
@@ -43,25 +43,5 @@
       "type": "node",
       "preLaunchTask": "npm: build"
     },
-    {
-      "args": [
-        "-u",
-        "bdd",
-        "--timeout",
-        "999999",
-        "--colors",
-        "-g", "spaced strings",
-        "${workspaceFolder}/dist/test.bundle.js"
-      ],
-      "internalConsoleOptions": "openOnSessionStart",
-      "name": "Spaced Strings",
-      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-      "request": "launch",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "node",
-      "preLaunchTask": "npm: build"
-    }
   ]
 }
