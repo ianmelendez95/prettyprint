@@ -54,7 +54,7 @@ export class PPrint {
   inputBuffer: Token[]
   outputBuffer: string[] = []
 
-  stream: (Token | number)[] = []
+  stream: Token[] = []
   size: number[] = []
 
   left: number 
@@ -69,8 +69,6 @@ export class PPrint {
 
   scan() {
     let x: Token | number
-
-    // S = stack of spaces and blocks
     let S: number[] = []
 
     while ((x = this.receive()).kind !== 'eof') {
@@ -92,14 +90,14 @@ export class PPrint {
         x = S.pop()
         this.size[x] += this.rightTotal
 
-        if ((this.stream[x] as Token).kind === 'blank') {
+        if (this.stream[x].kind === 'blank') {
           x = S.pop()
           this.size[x] = this.rightTotal + this.size[x]
         }
 
         if (S.length === 0) {
           while (this.left <= this.right) {
-            this.print(this.stream[this.left] as Token, this.size[this.left])
+            this.print(this.stream[this.left], this.size[this.left])
             this.left++
           }
         }
@@ -109,7 +107,7 @@ export class PPrint {
         this.size[this.right] = -this.rightTotal
 
         x = S.at(-1)
-        if (typeof this.stream[x] === "object" && (this.stream[x] as Token).kind === 'blank') {
+        if (this.stream[x].kind === 'blank') {
           this.size[S.pop()] = this.rightTotal + this.size[x]
         }
 
