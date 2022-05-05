@@ -11,6 +11,11 @@ describe('pprint-oppen', function () {
       pprint.scan()
       assert.equal(pprint.getOutput(), 'aaa')
     })
+    it('should print a simple block string', function () {
+      const pprint: PPrint = new PPrint(30, [mkBlockBegin(), mkString('aaa'), mkBlockEnd()])
+      pprint.scan()
+      assert.equal(pprint.getOutput(), 'aaa')
+    })
     it('should print spaced strings', function () {
       const pprint: PPrint = new PPrint(
         30, 
