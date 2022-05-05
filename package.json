@@ -4,8 +4,7 @@
   "description": "An exposition of various prettyprinting techniques",
   "main": "index.js",
   "scripts": {
-    "test": "./test-watch",
-    "test-debug": "./test-debug",
+    "test": "mocha --require source-map-support/register ./dist/test.bundle.js",
     "build": "webpack",
     "watch": "webpack --watch",
     "serve": "webpack serve"

@@ -30,6 +30,26 @@
         "--timeout",
         "999999",
         "--colors",
+        "-g", "block string",
+        "${workspaceFolder}/dist/test.bundle.js"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "name": "Block String",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node",
+      "preLaunchTask": "npm: build"
+    },
+    {
+      "args": [
+        "-u",
+        "bdd",
+        "--timeout",
+        "999999",
+        "--colors",
         "-g", "spaced strings",
         "${workspaceFolder}/dist/test.bundle.js"
       ],
