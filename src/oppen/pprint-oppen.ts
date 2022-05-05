@@ -63,6 +63,7 @@ export class PPrint {
 
   constructor(margin: number, input: Token[]) {
     this.margin = margin
+    this.space = margin
     this.inputBuffer = input
   }
 
@@ -75,8 +76,7 @@ export class PPrint {
     while ((x = this.receive()).kind !== 'eof') {
       if (x.kind === 'block-begin') {
         if (S.length === 0) {
-          this.left = this.right = 0
-          this.rightTotal = 1
+          this.left = this.right = this.rightTotal = 0
         } else {
           this.right++
         }
@@ -105,14 +105,14 @@ export class PPrint {
         }
       } else if (x.kind === 'blank') {
         this.right++
+        this.stream[this.right] = x
+        this.size[this.right] = -this.rightTotal
 
         x = S.at(-1)
-        if (this.stream[x] && (this.stream[x] as Token).kind === 'blank') {
+        if (typeof this.stream[x] === "object" && (this.stream[x] as Token).kind === 'blank') {
           this.size[S.pop()] = this.rightTotal + this.size[x]
         }
 
-        this.stream[this.right] = x
-        this.size[this.right] = -this.rightTotal
         S.push(this.right)
         this.rightTotal++
       } else if (x.kind === 'string') {
