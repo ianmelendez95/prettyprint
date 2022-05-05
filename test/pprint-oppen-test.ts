@@ -78,8 +78,12 @@ function testTree(): Tree {
 function tokenizeTree({ value, children }: Tree): Token[] {
   const tokens: Token[] = []
   tokens.push(mkBlockBegin())
-  tokens.push(mkString(value), mkBlank())
-  tokens.push(...intersperse(children.flatMap(tokenizeTree), mkBlank()))
+  tokens.push(mkString(value))
+  if (children.length > 0) {
+    tokens.push(mkString("["))
+    tokens.push(...intersperse(children.map(tokenizeTree), [mkString(","), mkBlank()]).flat())
+    tokens.push(mkString("]"))
+  }
   tokens.push(mkBlockEnd())
   return tokens
 }
