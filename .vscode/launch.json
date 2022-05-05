@@ -30,11 +30,11 @@
         "--timeout",
         "999999",
         "--colors",
-        "-g", "indent tree",
+        "-g", "function example",
         "${workspaceFolder}/dist/test.bundle.js"
       ],
       "internalConsoleOptions": "openOnSessionStart",
-      "name": "Indent Tree",
+      "name": "Single Test",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "request": "launch",
       "skipFiles": [

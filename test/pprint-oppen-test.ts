@@ -1,6 +1,5 @@
 import * as chai from 'chai'
 import { mkBlank, mkBlockBegin, mkBlockEnd, mkString, PPrint, Token } from '../src/oppen/pprint-oppen'
-import { Doc, concat, line, nest, nil, text, layout, group, pretty } from '../src/wadler/pprint-wadler'
 
 const assert = chai.assert
 
@@ -28,17 +27,36 @@ describe('pprint-oppen', function () {
       pprint.scan()
       assert.equal(pprint.getOutput(), 'hello world')
     })
-    it('should indent tree to width 30', function () {
-      const pprint: PPrint = new PPrint(30, tokenizeTree(testTree()))
+    it('should indent function example wide line', function () {
+      const pprint: PPrint = new PPrint(30, tokenizedFunction)
+      pprint.scan()
+      assert.equal(pprint.getOutput(), 'f(a, b, c, d) + g(a, b, c, d)')
+    })
+    it('should indent function example narrow line', function () {
+      // should not break the call to g between arguments
+      const pprint: PPrint = new PPrint(25, tokenizedFunction)
       pprint.scan()
       assert.equal(pprint.getOutput(), [
-        'aaa[bbbbb[ccc, dd],',
-        '    eee,',
-        '    ffff[gg, hhh, ii]]'
+        'f(a, b, c, d) +', 
+        'g(a, b, c, d)'
       ].join('\n'))
     })
   })
 })
+
+// from page 467 in Oppen
+// [[f(a, b, c, d)] + [g(a, b, c, d)]]
+const tokenizedFunction: Token[] = 
+  [ mkBlockBegin(),
+    mkBlockBegin(),
+    ...intersperse(("f(a, b, c, d)".split(' ').map(mkString) as Token[]), mkBlank()),
+    mkBlockEnd(),
+    mkBlank(), mkString("+"), mkBlank(),
+    mkBlockBegin(),
+    ...intersperse(("g(a, b, c, d)".split(' ').map(mkString) as Token[]), mkBlank()),
+    mkBlockEnd(),
+    mkBlockEnd()
+  ]
 
 ////////////////////////////////////////////////////////////////////////////////
 // Tree Structure

@@ -3,7 +3,7 @@ import { Doc, concat, line, nest, nil, text, layout, group, pretty } from '../sr
 
 const assert = chai.assert
 
-describe('pprint', function () {
+describe('pprint-wadler', function () {
   describe('#showTree', function () {
     it('should properly indent test tree', function () {
       assert.equal([
