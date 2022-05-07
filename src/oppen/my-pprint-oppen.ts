@@ -41,8 +41,7 @@ export class PPrint {
         this.size[lastSpace] += this.rightTotal
 
         // update the previous blank if there is any
-        const topIdx = top(this.S)
-        if (this.stream[top(this.S)].kind === 'blank') {
+        if (this.stream[lastSpace].kind === 'blank') {
           const topIdx = this.S.pop()
           this.size[topIdx] += this.rightTotal
         }
