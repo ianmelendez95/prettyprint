@@ -32,7 +32,7 @@
         "--timeout",
         "999999",
         "--colors",
-        "-g", "narrow line",
+        "-g", "block string",
         "${workspaceFolder}/dist/test.bundle.js"
       ],
       "internalConsoleOptions": "openOnSessionStart",

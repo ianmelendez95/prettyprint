@@ -145,5 +145,5 @@ class Tokenizer {
 }
 
 function top<T>(stack: T[]): T {
-  return stack[-1]
+  return stack.at(-1)
 }
