@@ -168,6 +168,7 @@ export class Printer {
   margin: number
 
   constructor(margin: number) {
+    this.space = margin
     this.margin = margin
   }
 
