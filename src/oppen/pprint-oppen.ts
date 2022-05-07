@@ -45,35 +45,47 @@ export function mkEOF(): EOF {
  */
 
 export class PPrint {
-  margin: number
+  printer: Printer
+  scanner: Scanner
 
-  space: number = 0
-  stack: number[] = []
+  constructor(margin: number, input: Token[]) {
+    this.printer = new Printer(margin)
+    this.scanner = new Scanner(new Tokenizer(input), this.printer)
+  }
 
-  inputIdx: number = 0
-  inputBuffer: Token[]
-  outputBuffer: string[] = []
+  scan() {
+    this.scanner.scan()
+  }
 
-  stream: Token[] = []
-  size: number[] = []
+  getOutput(): string {
+    return this.printer.getOutput()
+  }
+}
 
+export class Scanner {
   left: number 
   right: number 
   rightTotal: number
 
-  constructor(margin: number, input: Token[]) {
-    this.margin = margin
-    this.space = margin
-    this.inputBuffer = input
+  S: number[] = []
+  
+  stream: Token[] = []
+  size: number[] = []
+
+  tokenizer: Tokenizer
+  printer: Printer
+
+  constructor(tokenizer: Tokenizer,
+              printer: Printer) {
+    this.tokenizer = tokenizer
+    this.printer = printer
   }
 
   scan() {
     let x: Token | number
-    let S: number[] = []
-
-    while ((x = this.receive()).kind !== 'eof') {
+    while ((x = this.tokenizer.next()).kind !== 'eof') {
       if (x.kind === 'block-begin') {
-        if (S.length === 0) {
+        if (this.S.length === 0) {
           this.left = this.right = this.rightTotal = 0
         } else {
           this.right++
@@ -81,23 +93,23 @@ export class PPrint {
 
         this.stream[this.right] = x
         this.size[this.right] = -this.rightTotal
-        S.push(this.right)
+        this.S.push(this.right)
       } else if (x.kind === 'block-end') {
         this.right++
         this.stream[this.right] = x
         this.size[this.right] = 0
 
-        x = S.pop()
+        x = this.S.pop()
         this.size[x] += this.rightTotal
 
         if (this.stream[x].kind === 'blank') {
-          x = S.pop()
+          x = this.S.pop()
           this.size[x] = this.rightTotal + this.size[x]
         }
 
-        if (S.length === 0) {
+        if (this.S.length === 0) {
           while (this.left <= this.right) {
-            this.print(this.stream[this.left], this.size[this.left])
+            this.printer.print(this.stream[this.left], this.size[this.left])
             this.left++
           }
         }
@@ -106,16 +118,16 @@ export class PPrint {
         this.stream[this.right] = x
         this.size[this.right] = -this.rightTotal
 
-        x = S.at(-1)
+        x = this.S.at(-1)
         if (this.stream[x].kind === 'blank') {
-          this.size[S.pop()] = this.rightTotal + this.size[x]
+          this.size[this.S.pop()] = this.rightTotal + this.size[x]
         }
 
-        S.push(this.right)
+        this.S.push(this.right)
         this.rightTotal++
       } else if (x.kind === 'string') {
-        if (S.length === 0) {
-          this.print(x, x.string.length)
+        if (this.S.length === 0) {
+          this.printer.print(x, x.string.length)
         } else {
           this.right++
           this.stream[this.right] = x
@@ -125,8 +137,18 @@ export class PPrint {
       }
     }
   }
+}
 
-  receive(): Token {
+export class Tokenizer {
+  inputBuffer: Token[]
+
+  inputIdx: number = 0
+
+  constructor(input: Token[]) {
+    this.inputBuffer = input
+  }
+
+  next(): Token {
     if (this.inputIdx >= this.inputBuffer.length) {
       return EOF
     } else {
@@ -134,6 +156,19 @@ export class PPrint {
       this.inputIdx++
       return result
     }
+  }
+}
+
+export class Printer {
+  space: number = 0
+  S: number[] = []
+
+  outputBuffer: string[] = []
+
+  margin: number
+
+  constructor(margin: number) {
+    this.margin = margin
   }
 
   /**
@@ -151,12 +186,12 @@ export class PPrint {
       this.output(x.string)
       this.space -= l
     } else if (x.kind === 'block-begin') {
-      this.stack.push(this.space)
+      this.S.push(this.space)
     } else if (x.kind === 'block-end') {
-      this.stack.pop()
+      this.S.pop()
     } else if (x.kind === 'blank') {
       if (l > this.space) {
-        this.space = this.stack[-1] - 2
+        this.space = this.S[-1] - 2
         this.indent(this.margin - this.space)
       } else {
         this.output(x)
