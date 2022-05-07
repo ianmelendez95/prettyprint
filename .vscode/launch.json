@@ -10,7 +10,9 @@
         "bdd",
         "--timeout",
         "999999",
-        "--colors",
+        "--colors", 
+        "--require", 
+        "source-map-support/register", 
         "${workspaceFolder}/dist/test.bundle.js"
       ],
       "internalConsoleOptions": "openOnSessionStart",
@@ -30,7 +32,7 @@
         "--timeout",
         "999999",
         "--colors",
-        "-g", "function example",
+        "-g", "narrow line",
         "${workspaceFolder}/dist/test.bundle.js"
       ],
       "internalConsoleOptions": "openOnSessionStart",
