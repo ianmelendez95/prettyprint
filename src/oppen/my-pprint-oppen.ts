@@ -36,8 +36,12 @@ export class PPrint {
         this.stream[this.right] = x
         this.size[this.right] = 0
 
+        // always update the top space
+        const lastSpace = this.S.pop()
+        this.size[lastSpace] += this.rightTotal
+
         // update the previous blank if there is any
-        const topIdx = this.S[-1]
+        const topIdx = top(this.S)
         if (this.stream[top(this.S)].kind === 'blank') {
           const topIdx = this.S.pop()
           this.size[topIdx] += this.rightTotal
@@ -54,7 +58,6 @@ export class PPrint {
         this.size[this.right] = -this.rightTotal
         
         // update the previous blank if there is any
-        const topIdx = this.S[-1]
         if (this.stream[top(this.S)].kind === 'blank') {
           const topIdx = this.S.pop()
           this.size[topIdx] += this.rightTotal
@@ -107,7 +110,7 @@ class Printer {
       this.S.pop()
     } else if (x.kind === 'blank') {
       if (l > this.space) {
-        this.space = this.S[-1] - 2
+        this.space = top(this.S) - 2
         this.indent(this.margin - this.space)
       } else {
         this.output.push(' ')
