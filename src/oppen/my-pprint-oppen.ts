@@ -1,4 +1,4 @@
-import { Token, Blank, mkEOF } from "./pprint-oppen"
+import { Token, Blank, mkEOF } from "./oppen-tokens"
 
 export class PPrint {
   S: number[] = []

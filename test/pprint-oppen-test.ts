@@ -1,6 +1,6 @@
 import * as chai from 'chai'
-import { PPrint } from '../src/oppen/my-pprint-oppen'
-import { mkBlank, mkBlockBegin, mkBlockEnd, mkString, Token } from '../src/oppen/pprint-oppen'
+import { PPrint } from '../src/oppen/pprint-oppen'
+import { mkBlank, mkBlockBegin, mkBlockEnd, mkString, Token } from '../src/oppen/oppen-tokens'
 
 const assert = chai.assert
 
