@@ -14,7 +14,7 @@ describe('pprint-oppen', function () {
     it('should print a simple block string', function () {
       const pprint: PrettyPrinter = new PrettyPrinter(30)
       const input = [mkBegin(), mkString('aaa'), mkEnd()]
-      input.forEach(pprint.prettyPrint)
+      input.forEach((t) => pprint.prettyPrint(t))
       assert.equal(pprint.getOutput(), 'aaa')
     })
     it('should print spaced strings', function () {
@@ -26,18 +26,18 @@ describe('pprint-oppen', function () {
         mkString('world'),
         mkEnd()
       ]
-      input.forEach(pprint.prettyPrint)
+      input.forEach((t) => pprint.prettyPrint(t))
       assert.equal(pprint.getOutput(), 'hello world')
     })
     it('should indent function example wide line', function () {
       const pprint: PrettyPrinter = new PrettyPrinter(30)
-      tokenizedFunction.forEach(pprint.prettyPrint)
+      tokenizedFunction.forEach((t) => pprint.prettyPrint(t))
       assert.equal(pprint.getOutput(), 'f(a, b, c, d) + g(a, b, c, d)')
     })
     it('should indent function example narrow line', function () {
       // should not break the call to g between arguments
       const pprint: PrettyPrinter = new PrettyPrinter(25)
-      tokenizedFunction.forEach(pprint.prettyPrint)
+      tokenizedFunction.forEach((t) => pprint.prettyPrint(t))
       assert.equal(pprint.getOutput(), [
         'f(a, b, c, d) +', 
         'g(a, b, c, d)'
