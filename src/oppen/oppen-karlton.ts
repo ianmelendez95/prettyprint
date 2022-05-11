@@ -64,6 +64,12 @@ export class PrettyPrinter {
     n = 3 * this.margin
   }
 
+  prettyPrintAll(ts: Token[]) {
+    for (const t of ts) {
+      this.prettyPrint(t)
+    }
+  }
+
   prettyPrint(t: Token) {
     if (t.kind === 'eof') {
       if (this.scanStack.length !== 0) {

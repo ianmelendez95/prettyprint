@@ -32,7 +32,7 @@
         "999999",
         "--colors",
         "--require", "source-map-support/register", 
-        "-g", "block string",
+        "-g", "print a simple block string",
         "${workspaceFolder}/dist/test.bundle.js"
       ],
       "internalConsoleOptions": "openOnSessionStart",
