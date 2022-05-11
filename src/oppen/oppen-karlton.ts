@@ -35,7 +35,7 @@ const MAX_BLANKS = Number.MAX_SAFE_INTEGER
 const LINE_BREAK: Break = mkBreak(MAX_BLANKS)
 
 export class PrettyPrinter {
-  outputBuffer: string[]
+  outputBuffer: string[] = []
 
   margin: number
   space: number 
@@ -50,7 +50,7 @@ export class PrettyPrinter {
   rightTotal: number
 
   sizeInfinity: number = Number.MAX_SAFE_INTEGER
-  scanStack: number[]
+  scanStack: number[] = []
 
   // top: number 
   // bottom: number
