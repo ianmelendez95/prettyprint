@@ -34,7 +34,7 @@ export function mkEOF(): EOF {
 const MAX_BLANKS = Number.MAX_SAFE_INTEGER
 const LINE_BREAK: Break = mkBreak(MAX_BLANKS)
 
-class PrettyPrinter {
+export class PrettyPrinter {
   outputBuffer: string[]
 
   margin: number
@@ -260,6 +260,10 @@ class PrettyPrinter {
     } else {
       throw new Error('Unhandled token type: ' + x.kind)
     }
+  }
+
+  getOutput(): string {
+    return this.outputBuffer.join('')
   }
 }
 
