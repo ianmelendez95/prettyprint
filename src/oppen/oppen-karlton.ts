@@ -88,7 +88,7 @@ export class PrettyPrinter {
 
       this.token[this.right] = t
       this.size[this.right] = -this.rightTotal
-      this.scanPush(this.right)
+      this.scanStack.push(this.right)
     } else if (t.kind === 'end') {
       if (this.scanStack.length === 0) {
         this.print(t, 0)
@@ -96,7 +96,7 @@ export class PrettyPrinter {
         this.advanceRight()
         this.token[this.right] = t
         this.size[this.right] = -1
-        this.scanPush(this.right)
+        this.scanStack.push(this.right)
       }
     } else if (t.kind === 'break') {
       if (this.scanStack.length === 0) {
@@ -107,7 +107,7 @@ export class PrettyPrinter {
       }
 
       this.checkStack(0)
-      this.scanPush(this.right)
+      this.scanStack.push(this.right)
       this.token[this.right] = t
       this.size[this.right] = -this.rightTotal
       this.rightTotal = this.rightTotal + t.blankSpace
@@ -137,10 +137,6 @@ export class PrettyPrinter {
         this.checkStream()
       }
     }
-  }
-
-  scanPush(x: number) {
-    this.scanStack.push(x)
   }
 
   scanPop() {
@@ -245,6 +241,7 @@ export class PrettyPrinter {
       const printTop = this.printStack.top()
       if (printTop.break === 'fits') {
           this.space -= x.blankSpace
+          this.indent(x.blankSpace)
       } else if (printTop.break === 'consistent') {
           this.space = this.printStack.top().offset - x.offset
           this.printNewLine(this.margin - this.space)
@@ -254,6 +251,7 @@ export class PrettyPrinter {
           this.printNewLine(this.margin - this.space)
         } else {
           this.space -= x.blankSpace
+          this.indent(x.blankSpace)
         }
       } 
     } else if (x.kind === 'string') {
