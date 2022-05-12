@@ -35,14 +35,14 @@ describe('pprint-oppen', function () {
     })
     it('should indent function example wide line', function () {
       const pprint: PrettyPrinter = new PrettyPrinter(30)
-      pprint.prettyPrintAll(tokenizedFunction)
+      pprint.prettyPrintAll(tokenizedFunction())
       pprint.prettyPrint(mkEOF())
       assert.equal(pprint.getOutput(), 'f(a, b, c, d) + g(a, b, c, d)')
     })
     it('should indent function example narrow line', function () {
       // should not break the call to g between arguments
       const pprint: PrettyPrinter = new PrettyPrinter(25)
-      pprint.prettyPrintAll(tokenizedFunction)
+      pprint.prettyPrintAll(tokenizedFunction())
       pprint.prettyPrint(mkEOF())
       assert.equal(pprint.getOutput(), [
         'f(a, b, c, d) +', 
@@ -54,8 +54,9 @@ describe('pprint-oppen', function () {
 
 // from page 467 in Oppen
 // [[f(a, b, c, d)] + [g(a, b, c, d)]]
-const tokenizedFunction: Token[] = 
-  [ mkBegin(),
+function tokenizedFunction(): Token[] {
+  return [ 
+    mkBegin(),
     mkBegin(),
     ...intersperse(("f(a, b, c, d)".split(' ').map(mkString) as Token[]), mkBreak()),
     mkEnd(),
@@ -65,6 +66,7 @@ const tokenizedFunction: Token[] =
     mkEnd(),
     mkEnd()
   ]
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Tree Structure
